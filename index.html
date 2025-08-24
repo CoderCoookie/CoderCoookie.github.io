@@ -1,12 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scottnow0</title>
+    <title>Cookie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#50E3C2',
+                        code: '#2D3748',
+                        light: '#F7FAFC'
+                    },
+                    fontFamily: {
+                        code: ['Consolas', 'Monaco', 'monospace'],
+                        sans: ['Comic Sans MS', 'Marker Felt', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+            .blink {
+                animation: blink 1s step-end infinite;
+            }
+            .rotate {
+                animation: rotate 8s linear infinite;
+            }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<body>
-    <h1>你好</h1>
+<body class="bg-light font-sans text-gray-800">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-xl font-bold text-primary flex items-center">
+                    <i class="fa fa-code mr-2"></i>
+                    <span>Cookie</span>
+                </a>
+                
+                <div class="hidden md:flex space-x-6">
+                    <a href="#about" class="hover:text-primary transition-colors"></a>
+                </div>
+                
+                <!-- 移动端菜单按钮 -->
+                <button id="menuBtn" class="md:hidden text-xl">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="md:hidden hidden mt-3 pb-2">
+                <div class="flex flex-col space-y-3">
+                    <a href="#about" class="hover:text-primary transition-colors">关于我</a>
+                    <a href="#hobbies" class="hover:text-primary transition-colors">编程爱好</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-cyan-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-6 leading-tight">
+                        Hi, I'm<span class="text-primary"> Cookie</span><span class="blink">_</span>
+                    </h1>
+                    <p class="text-lg mb-8">
+                        A coding lover<br>
+                        An idea creator<br>
+                        A brave explorer! 
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="https://github.com" target="_blank" class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
+                            <i class="fa fa-github mr-2"></i> Github
+                        </a>
+                        <a href="https://codercoookie.github.io" class="bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-5 py-2 rounded-lg transition-colors flex items-center">
+                            <i class="fa fa-star mr-2"></i> Another Web
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-full blur-lg opacity-30 rotate"></div>
+                        <img src="https://avatars.githubusercontent.com/u/228213381?v=4" alt="Cookie" class="relative z-10 w-56 h-56 rounded-full border-4 border-white shadow-lg float">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">关于我</h2>
+                <div class="w-16 h-2 bg-primary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-gray-50 p-8 rounded-xl shadow-sm">
+                <div class="flex items-start">
+                    <div class="mr-6 text-primary text-4xl">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <div>
+                        <p class="mb-4 leading-relaxed">
+                            Hi, I'm Cookie. A nooormal coder with a biiig dream. 
+                        </p>
+                        <p class="mb-4 leading-relaxed">
+                            I fell in love with coding when I wrote my first C++ program. 
+                        </p>
+                        <p class="leading-relaxed">
+                            I'm a student now, but I hope my program can attract U!!!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 页脚 -->
+    <footer class="bg-code text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <h3 class="text-xl font-bold mb-2">Cookie</h3>
+                <p class="text-gray-400">CoderCoookie</p>
+            </div>
+            
+            <div class="flex justify-center space-x-4 mb-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa fa-github text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa fa-codepen text-xl"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa fa-youtube-play text-xl"></i>
+                </a>
+            </div>
+            
+            <p class="text-gray-500 text-sm">
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuBtn.innerHTML = '<i class="fa fa-bars"></i>';
+            } else {
+                menuBtn.innerHTML = '<i class="fa fa-times"></i>';
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    menuBtn.innerHTML = '<i class="fa fa-bars"></i>';
+                }
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
