@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Blog</title>
+    <link rel="icon" href="https://codercoookie.github.io/image/coookie.png" type="image/png">
+    <link rel="shortcut icon" href="https://codercoookie.github.io/image/coookie.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Cookie Blog</div>
+                <ul class="nav-links">
+                    <!-- <li><a href="#" id="home-link">首页</a></li>
+                    <li><a href="#">关于</a></li>
+                    <li><a href="#">联系</a></li>
+                    <li><a href="#" id="logout-link" style="display: none;">退出</a></li> -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 登录/注册表单 -->
+        <div id="auth-container" class="auth-container">
+            <h2 id="auth-title">Log in</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group" id="confirm-password-group" style="display: none;">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password">
+                </div>
+                <button type="submit" id="auth-button">Log in</button>
+            </form>
+            <div class="toggle-auth">
+                <p id="auth-toggle">Have no account? <a id="auth-toggle-link">Sign up</a></p>
+            </div>
+        </div>
+
+        <!-- 博客内容区域 -->
+        <div id="blog-content" class="blog-content">
+            <!-- 发布帖子表单 -->
+            <div class="post-form">
+                <h2>Post a new Blog</h2>
+                <form id="post-form">
+                    <div class="form-group">
+                        <label for="post-title">Title</label>
+                        <input type="text" id="post-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="post-content">Contents</label>
+                        <textarea id="post-content" required></textarea>
+                    </div>
+                    <button type="submit">Post</button>
+                </form>
+            </div>
+
+            <!-- 帖子列表 -->
+            <div class="posts-container" id="posts-container">
+                <!-- 帖子将通过JS动态添加 -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Github Wibo-666 provides the code. - CoderCoookie</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
