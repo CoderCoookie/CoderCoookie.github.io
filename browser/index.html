@@ -508,8 +508,8 @@
                 urlInput.value = '';
                 currentUrl = '';
                 hasError = false;
-                updateTabTitle('新标签页');
-                statusText.textContent = '就绪';
+                updateTabTitle('New Tab');
+                statusText.textContent = 'Ready';
             });
             
             // 更新标签页标题
@@ -525,7 +525,7 @@
                 if (title.length > 20) {
                     title = title.substring(0, 20) + '...';
                 }
-                activeTab.textContent = title || '新标签页';
+                activeTab.textContent = title || 'New Tab';
             }
             
             // 初始聚焦地址栏
