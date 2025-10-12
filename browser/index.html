@@ -300,13 +300,13 @@
     <div class="browser-container">
         <div class="browser-header">
             <div class="navigation-controls">
-                <button class="nav-btn" id="back-btn" title="后退">←</button>
-                <button class="nav-btn" id="forward-btn" title="前进">→</button>
-                <button class="nav-btn" id="refresh-btn" title="刷新">↻</button>
+                <button class="nav-btn" id="back-btn" title="back">←</button>
+                <button class="nav-btn" id="forward-btn" title="front">→</button>
+                <button class="nav-btn" id="refresh-btn" title="refresh">↻</button>
             </div>
             <div class="address-bar">
                 <span class="security-icon">🔒</span>
-                <input type="text" id="url-input" placeholder="输入网址或搜索内容" autocomplete="off">
+                <input type="text" id="url-input" placeholder="Cookie Browser" autocomplete="off">
             </div>
         </div>
         
@@ -489,8 +489,8 @@
                 urlInput.value = '';
                 currentUrl = '';
                 hasError = false;
-                updateTabTitle('新标签页');
-                statusText.textContent = '就绪';
+                updateTabTitle('New Tab');
+                statusText.textContent = 'ready';
             });
             
             // 重试按钮
