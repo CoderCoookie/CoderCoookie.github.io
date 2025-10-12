@@ -1,3 +1,30 @@
+<!-- <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">Cookie</h2>
+                <div class="w-16 h-2 bg-primary mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-gray-50 p-8 rounded-xl shadow-sm">
+                <div class="flex items-start">
+                    <div class="mr-6 text-primary text-4xl">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <div>
+                        <p class="mb-4 leading-relaxed">
+                             
+                        </p>
+                        <p class="mb-4 leading-relaxed">
+                            
+                        </p>
+                        <p class="leading-relaxed">
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -71,10 +98,10 @@
                 </a>
                 
                 <div class="hidden md:flex space-x-6 justify-start flex-1 ml-8">
-                    <a href="https://codercoookie.github.io/blog/" class="hover:text-primary transition-colors">Blog</a>
+                    <!-- <a href="https://codercoookie.github.io/blog/" class="hover:text-primary transition-colors">Blog</a>
                     <a href="https://codercoookie.github.io/workspace/" class="hover:text-primary transition-colors">Workspace</a>
                     <a href="https://hydro.ac/d/CookieOJ/" class="hover:text-primary transition-colors">COJ</a>
-                    <a href="https://vijos.org/d/AuroraOJ/" class="hover:text-primary transition-colors">AOJ</a>
+                    <a href="https://vijos.org/d/AuroraOJ/" class="hover:text-primary transition-colors">AOJ</a> -->
                 </div>
                 
                 <!-- 移动端菜单按钮 -->
@@ -124,33 +151,146 @@
         </div>
     </header>
     
-    <!-- <section id="about" class="py-16 bg-white">
+    <!-- 应用程序版块 -->
+    <section id="apps" class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">Cookie</h2>
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">Applications</h2>
                 <div class="w-16 h-2 bg-primary mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">CoderCoookie Net Apps</p>
             </div>
             
-            <div class="max-w-3xl mx-auto bg-gray-50 p-8 rounded-xl shadow-sm">
-                <div class="flex items-start">
-                    <div class="mr-6 text-primary text-4xl">
-                        <i class="fa fa-user-circle"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 开发工具类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mr-3">
+                            <i class="fa fa-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Code</h3>
                     </div>
-                    <div>
-                        <p class="mb-4 leading-relaxed">
-                             
-                        </p>
-                        <p class="mb-4 leading-relaxed">
-                            
-                        </p>
-                        <p class="leading-relaxed">
-                            
-                        </p>
+                    <ul class="space-y-3">
+                            <a href="https://hydro.ac/d/CookieOJ/" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Cookie Online Judge</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://vijos.org/d/AuroraOJ/" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Aurora Online Judge</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 学习资源类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500 mr-3">
+                            <i class="fa fa-book"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Resource</h3>
                     </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://www.luogu.com.cn/user/1008766" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Luogu Blog</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://blog.csdn.net/OIer_Jacky" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>CSDN</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Cokie" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>博客园</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <!-- 在线工具类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mr-3">
+                            <i class="fa fa-wrench"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Tool</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://github.com/CoderCoookie/FileEditor" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>File Editor</span>
+                            </a>
+                        <li>
+                        <li>
+                            <a href="https://github.com/CoderCoookie/QuickCpp" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Quick Cpp</span>
+                            </a>
+                        <li>
+                    </ul>
+                </div>
+
+                <!-- 算法平台类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 mr-3">
+                            <i class="fa fa-calculator"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Work</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://codercoookie.github.io/workspace/" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Workspace</span>
+                            </a>
+                        <li>
+                    </ul>
+                </div>
+                
+                <!-- 游戏与娱乐类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 mr-3">
+                            <i class="fa fa-gamepad"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Life</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://codercoookie.github.io/blog/" class="flex items-center hover:text-primary transition-colors">
+                                <i class="fa fa-external-link mr-2 text-sm"></i>
+                                <span>Blog</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 实用工具类别 -->
+                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mr-3">
+                            <i class="fa fa-cog"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Others</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        
+                    </ul>
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
+    
     <!-- 页脚 -->
     <footer class="bg-code text-white py-8">
         <div class="container mx-auto px-4 text-center">
