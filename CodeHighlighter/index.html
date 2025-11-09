@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Highlighter</title>
+    
+    <!-- 引入 Prism.js 用于语法高亮 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.css" rel="stylesheet" />
+    <!-- 引入行号插件 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            padding: 20px;
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            overflow: hidden;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: #4da6ff;
+            background: rgba(77, 166, 255, 0.1);
+        }
+        
+        .upload-area.dragover {
+            border-color: #4da6ff;
+            background: rgba(77, 166, 255, 0.15);
+            transform: scale(1.02);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(to right, #4da6ff, #0066cc);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+            font-weight: 500;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+        
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .code-container {
+            margin-top: 20px;
+            display: none;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-header {
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .language-tag {
+            background: linear-gradient(to right, #4da6ff, #0066cc);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        pre {
+            margin: 0 !important;
+            background: transparent !important;
+            padding: 10px 20px !important; /* 减少顶部内边距 */
+            overflow-x: auto;
+            max-height: 600px;
+        }
+        
+        pre code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #4da6ff;
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .drop-text {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 10px 0;
+        }
+        
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .copy-btn.copied {
+            background: rgba(77, 166, 255, 0.5);
+        }
+        
+        /* 自定义滚动条 */
+        pre::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        pre::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        pre::-webkit-scrollbar-thumb {
+            background: #4da6ff;
+            border-radius: 5px;
+        }
+        
+        pre::-webkit-scrollbar-thumb:hover {
+            background: #0066cc;
+        }
+        
+        /* 行号样式 */
+        pre.line-numbers {
+            position: relative;
+            padding-left: 3.8em !important; /* 为行号留出空间 */
+            counter-reset: linenumber;
+        }
+        
+        pre.line-numbers > code {
+            position: relative;
+        }
+        
+        .line-numbers .line-numbers-rows {
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            font-size: 100%;
+            left: -3.8em;
+            width: 3em; /* 行号列的宽度 */
+            letter-spacing: -1px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1); /* 行号与代码之间的分割线 */
+            user-select: none;
+        }
+        
+        .line-numbers-rows > span {
+            display: block;
+            counter-increment: linenumber;
+        }
+        
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-area" id="uploadArea">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #667eea; margin-bottom: 15px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p style="font-size: 18px; color: #333; margin-bottom: 10px;">Drag code file here</p>
+            <p class="drop-text">or</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Select File
+            </button>
+            <input type="file" id="fileInput" accept=".txt,.js,.py,.java,.cpp,.c,.h,.cs,.php,.rb,.go,.ts,.jsx,.tsx,.vue,.html,.css,.scss,.sql,.json,.xml,.yml,.yaml,.md,.sh,.bat,.ps1,.swift,.kt,.rs,.r,.m,.mm,.dart,.scala,.pl,.lua,.perl">
+        </div>
+        
+        <div class="loading" id="loading">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+                <line x1="12" y1="2" x2="12" y2="6"></line>
+                <line x1="12" y1="18" x2="12" y2="22"></line>
+                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                <line x1="2" y1="12" x2="6" y2="12"></line>
+                <line x1="18" y1="12" x2="22" y2="12"></line>
+                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>
+            <p>Processing file...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="file-info" id="fileInfo">
+            <p><strong>File Name:</strong><span id="fileName"></span></p>
+            <p><strong>File Size:</strong><span id="fileSize"></span></p>
+            <p><strong>Detected Language:</strong><span id="detectedLanguage"></span></p>
+        </div>
+        
+        <div class="code-container" id="codeContainer">
+            <div class="code-header">
+                <span class="language-tag" id="languageTag"></span>
+                <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy Code</button>
+            </div>
+            <pre class="line-numbers"><code id="codeDisplay"></code></pre>
+        </div>
+    </div>
+    
+    <!-- 引入 Prism.js 核心 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <!-- 引入 Prism.js 自动加载器 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- 引入 Prism.js 工具栏插件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <!-- 引入 Prism.js 复制按钮插件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <!-- 引入 Prism.js 行号插件 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    
+    <script>
+        // 文件扩展名到语言的映射
+        const languageMap = {
+            'js': 'javascript',
+            'jsx': 'javascript',
+            'ts': 'typescript',
+            'tsx': 'typescript',
+            'py': 'python',
+            'java': 'java',
+            'cpp': 'cpp',
+            'c': 'c',
+            'h': 'c',
+            'cs': 'csharp',
+            'php': 'php',
+            'rb': 'ruby',
+            'go': 'go',
+            'vue': 'vue',
+            'html': 'html',
+            'htm': 'html',
+            'css': 'css',
+            'scss': 'scss',
+            'sass': 'sass',
+            'sql': 'sql',
+            'json': 'json',
+            'xml': 'xml',
+            'yml': 'yaml',
+            'yaml': 'yaml',
+            'md': 'markdown',
+            'sh': 'bash',
+            'bat': 'batch',
+            'ps1': 'powershell',
+            'swift': 'swift',
+            'kt': 'kotlin',
+            'rs': 'rust',
+            'r': 'r',
+            'm': 'objectivec',
+            'mm': 'objectivec',
+            'dart': 'dart',
+            'scala': 'scala',
+            'pl': 'perl',
+            'lua': 'lua',
+            'txt': 'text'
+        };
+        
+        // 语言显示名称映射
+        const languageDisplayNames = {
+            'javascript': 'JavaScript',
+            'typescript': 'TypeScript',
+            'python': 'Python',
+            'java': 'Java',
+            'cpp': 'C++',
+            'c': 'C',
+            'csharp': 'C#',
+            'php': 'PHP',
+            'ruby': 'Ruby',
+            'go': 'Go',
+            'vue': 'Vue',
+            'html': 'HTML',
+            'css': 'CSS',
+            'scss': 'SCSS',
+            'sass': 'Sass',
+            'sql': 'SQL',
+            'json': 'JSON',
+            'xml': 'XML',
+            'yaml': 'YAML',
+            'markdown': 'Markdown',
+            'bash': 'Bash',
+            'batch': 'Batch',
+            'powershell': 'PowerShell',
+            'swift': 'Swift',
+            'kotlin': 'Kotlin',
+            'rust': 'Rust',
+            'r': 'R',
+            'objectivec': 'Objective-C',
+            'dart': 'Dart',
+            'scala': 'Scala',
+            'perl': 'Perl',
+            'lua': 'Lua',
+            'text': 'Plain Text'
+        };
+        
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const fileInfo = document.getElementById('fileInfo');
+        const codeContainer = document.getElementById('codeContainer');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const languageTag = document.getElementById('languageTag');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        let currentCode = '';
+        
+        // 文件选择事件
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // 拖拽事件
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        });
+        
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+        
+        function detectLanguage(filename) {
+            const extension = filename.split('.').pop().toLowerCase();
+            return languageMap[extension] || 'text';
+        }
+        
+        function getLanguageDisplayName(language) {
+            return languageDisplayNames[language] || language.toUpperCase();
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function processFile(file) {
+            // 重置状态
+            error.style.display = 'none';
+            fileInfo.style.display = 'none';
+            codeContainer.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // 验证文件
+            if (file.size > 10 * 1024 * 1024) { // 10MB限制
+                showError('File size cannot exceed 10MB');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const language = detectLanguage(file.name);
+                    const displayName = getLanguageDisplayName(language);
+                    
+                    currentCode = content;
+                    
+                    // 显示文件信息
+                    document.getElementById('fileName').textContent = file.name;
+                    document.getElementById('fileSize').textContent = formatFileSize(file.size);
+                    document.getElementById('detectedLanguage').textContent = displayName;
+                    fileInfo.style.display = 'block';
+                    
+                    // 显示代码
+                    codeDisplay.textContent = content;
+                    codeDisplay.className = `language-${language}`;
+                    languageTag.textContent = displayName;
+                    
+                    loading.style.display = 'none';
+                    codeContainer.style.display = 'block';
+                    
+                    // 重新高亮代码并应用行号
+                    Prism.highlightElement(codeDisplay);
+                    
+                    // 隐藏上传区域
+                    uploadArea.style.display = 'none';
+
+                } catch (err) {
+                    showError('Error processing file: ' + err.message);
+                }
+            };
+            
+            reader.onerror = function() {
+                showError('Failed to read file');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        function showError(message) {
+            loading.style.display = 'none';
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+        
+        function copyCode() {
+            if (currentCode) {
+                navigator.clipboard.writeText(currentCode).then(() => {
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy Code';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    // 降级方案
+                    const textArea = document.createElement('textarea');
+                    textArea.value = currentCode;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy Code';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+        }
+        
+        // 添加加载动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            .spin {
+                animation: spin 1s linear infinite;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
