@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CookieOJ - 基于Hydro系统的编程评测学习平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #ef4444;
+            --light: #f1f5f9;
+            --dark: #0f172a;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            color: white;
+            padding: 10rem 0 6rem;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border-color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 题库介绍部分 */
+        .problem-library {
+            padding: 6rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .problem-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .problem-card .difficulty {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .difficulty-easy {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .difficulty-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .difficulty-hard {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* 月赛部分 */
+        .monthly-contest {
+            padding: 6rem 0;
+            background-color: #f1f5f9;
+        }
+
+        .contest-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contest-header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .contest-header h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contest-timer {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .timer-item {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .contest-body {
+            padding: 2.5rem;
+        }
+
+        .contest-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contest-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contest-feature i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        /* 社区环境部分 */
+        .community {
+            padding: 6rem 0;
+            background-color: white;
+        }
+
+        .community-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4rem;
+        }
+
+        .community-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .community-text h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .community-stats {
+            flex: 1;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat {
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        /* 语言支持 */
+        .languages {
+            padding: 4rem 0;
+            background-color: #f1f5f9;
+        }
+
+        .languages-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .language-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .language-card.main-language {
+            border-color: var(--secondary);
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+        }
+
+        .language-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .cpp-icon { color: #00599c; }
+        .c-icon { color: #a8a8a8; }
+        .python-icon { color: #3776ab; }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .problems-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary);
+                padding: 1rem 0;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.8rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero {
+                padding: 8rem 0 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .community-content {
+                flex-direction: column;
+            }
+            
+            .contest-timer {
+                gap: 1rem;
+            }
+            
+            .timer-item {
+                min-width: 70px;
+                padding: 0.8rem;
+            }
+            
+            .timer-value {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .language-card {
+                width: 150px;
+            }
+            
+            .language-card.main-language {
+                transform: none;
+            }
+            
+            .contest-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">Cookie<span>OJ</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#problems">题库</a></li>
+                <li><a href="#contest">月赛</a></li>
+                <li><a href="#community">社区</a></li>
+                <li><a href="#language">语言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>CookieOJ - 曲奇Online Judge</h1>
+            <p>基于Hydro系统的编程评测学习平台, 帮助OIer进步</p>
+            <div class="cta-buttons">
+                <a href="https://hydro.ac/d/CookieOJ/" class="btn btn-primary">进入系统</a>
+                <a href="https://hydro.ac/d/CookieOJ/register" class="btn btn-secondary">注册账号</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 题库介绍部分 -->
+    <section class="problem-library" id="problems">
+        <div class="container">
+            <div class="section-title">
+                <h2>竞赛题库</h2>
+                <p>涵盖luogu部分原题, 信息学奥赛一本通, 深入浅出, CookieOJ原创题库等大量题目</p>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-sort-amount-down"></i>
+                    </div>
+                    <h3>数据结构</h3>
+                    <div class="difficulty difficulty-easy">基础</div>
+                    <p>栈、队列、链表、树、并查集、堆、线段树等</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3>图论算法</h3>
+                    <div class="difficulty difficulty-hard">困难</div>
+                    <p>图上DFS/BFS、最短路、最小生成树、拓扑排序、网络流等</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>动态规划</h3>
+                    <div class="difficulty difficulty-hard">困难</div>
+                    <p>线性DP、区间DP、树形DP、状态压缩DP、数位DP等</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>搜索算法</h3>
+                    <div class="difficulty difficulty-medium">中等</div>
+                    <p>BFS/DFS、双向BFS、A*算法、IDA*等</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3>数学与数论</h3>
+                    <div class="difficulty difficulty-hard">困难</div>
+                    <p>素数判定、同余理论、组合数学、博弈论、计算几何等</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>竞赛真题</h3>
+                    <div class="difficulty difficulty-medium">中等</div>
+                    <p>历年竞赛真题(from luogu) + CookieOI原创题目</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 月赛部分 -->
+    <section class="monthly-contest" id="contest">
+        <div class="container">
+            <div class="section-title">
+                <h2>CookieOI月赛</h2>
+                <p>每月举办OJ月赛, 整月时间自选3小时答题, 自由度高随时练习</p>
+            </div>
+            <div class="contest-card">
+                <div class="contest-header">
+                    <h3>CookieOI[2026.01]</h3>
+                    <p>2026年1月1日 00:00 - 2026年1月31日 23:59 (3h)</p>
+                    <div class="contest-timer">
+                        <div class="timer-item">
+                            <div class="timer-value" id="days">--</div>
+                            <div class="timer-label">天</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-value" id="hours">--</div>
+                            <div class="timer-label">小时</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-value" id="minutes">--</div>
+                            <div class="timer-label">分钟</div>
+                        </div>
+                        <div class="timer-item">
+                            <div class="timer-value" id="seconds">--</div>
+                            <div class="timer-label">秒</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contest-body">
+                    <p>本次月赛包含4道题目，难度分布为：普及-/普及+/提高/提高+，适合CSP-J/S水平的选手参与练习。比赛结束后将提供详细题解。</p>
+                    <div class="contest-features">
+                        <div class="contest-feature">
+                            <i class="fas fa-medal"></i>
+                            <div>
+                                <h4>2人AK</h4>
+                                <p>Rotavirus, wibo-666</p>
+                            </div>
+                        </div>
+                        <div class="contest-feature">
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <h4>实时排名</h4>
+                                <p>官方发布排名: .../contest/1/scoretable.html</p>
+                            </div>
+                        </div>
+                        <div class="contest-feature">
+                            <i class="fas fa-users"></i>
+                            <div>
+                                <h4>5人参赛</h4>
+                                <p>期待您的参与</p>
+                            </div>
+                        </div>
+                        <div class="contest-feature">
+                            <i class="fas fa-file-code"></i>
+                            <div>
+                                <h4>赛后题解</h4>
+                                <p>赛后将会在题板中发布官方和用户题解，分享经验</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://hydro.ac/d/CookieOJ/contest/694df1fea54e781b02233539" class="btn btn-primary">进入比赛</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社区环境部分 -->
+    <section class="community" id="community">
+        <div class="container">
+            <div class="section-title">
+                <h2>平台社区</h2>
+                <p>与全国OIer一起学习，共同进步</p>
+            </div>
+            <div class="community-content">
+                <div class="community-text">
+                    <h3>为什么选择CookieOJ - Hydro系统? </h3>
+                    <p>多个讨论板块，你可以随时分享自己的经验与心得</p>
+                    <p>社区特色：</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">讨论区共同攻克难题</li>
+                        <li style="margin-bottom: 0.5rem;">经验分享，共同进步</li>
+                        <li style="margin-bottom: 0.5rem;">题目答疑解惑，快速解决问题</li>
+                        <li style="margin-bottom: 0.5rem;">上传至OJ，学习资源快速分享</li>
+                    </ul>
+                    <a href="https://hydro.ac/d/CookieOJ/discuss" class="btn btn-primary" style="margin-top: 1.5rem;">加入讨论</a>
+                </div>
+                <div class="community-stats">
+                    <div class="stat">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">活跃用户</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">2,600+</div>
+                        <div class="stat-label">竞赛题目</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">月赛举办</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">5+</div>
+                        <div class="stat-label">社区帖子</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 语言支持 -->
+    <section class="languages" id="language">
+        <div class="container">
+            <div class="section-title">
+                <h2>支持语言</h2>
+                <p>推荐信息学的常用语言</p>
+            </div>
+            <div class="languages-container">
+                <div class="language-card main-language">
+                    <div class="language-icon cpp-icon">
+                        <i class="fab fa-cuttlefish"></i><i class="fas fa-plus" style="font-size: 1.5rem; position: relative; left: -10px;"></i>
+                    </div>
+                    <h4>C++</h4>
+                    <p>信息学竞赛首选语言</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: #666;">支持C++11/14/17标准</p>
+                </div>
+                <div class="language-card">
+                    <div class="language-icon c-icon">
+                        <i class="fab fa-cuttlefish"></i>
+                    </div>
+                    <h4>C</h4>
+                    <p>基础语言支持</p>
+                </div>
+                <div class="language-card">
+                    <div class="language-icon python-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h4>Python</h4>
+                    <p>可选语言支持</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <p>编译和运行环境基本相似于NOI标准</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>CookieOJ</h4>
+                    <p>基于Hydro系统的编程评测学习平台, 帮助OIer进步</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-bilibili"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>平台导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#problems">题库</a></li>
+                        <li><a href="#contest">月赛</a></li>
+                        <li><a href="#community">社区</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>站内链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://hydro.ac/d/CookieOJ/">首页</a></li>
+                        <li><a href="https://hydro.ac/d/CookieOJ/p">题库</a></li>
+                        <li><a href="https://hydro.ac/d/CookieOJ/contest">比赛</a></li>
+                        <li><a href="https://hydro.ac/d/CookieOJ/homework">作业</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>联系我们</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i>JackyHuang_ses@outlook.com</li>
+                        <li><i class="fas fa-qq"></i> OI交流群: 无</li>
+                        <li><i class="fas fa-globe"></i> www.ButterCoookie.github.io/CookieOJ</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 CookieOJ</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            
+            // 切换菜单图标
+            const icon = mobileMenuBtn.querySelector('i');
+            if (icon.classList.contains('fa-bars')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // 点击导航链接后关闭移动菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 月赛倒计时
+        function updateCountdown() {
+            // 设置目标日期（示例：15天后的下午2点）
+            const targetDate = new Date("January 31, 2026 23:59:59");
+            
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            if (distance < 0) {
+                // 如果时间已过，重置为15天后
+                targetDate.setDate(targetDate.getDate() + 30);
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // 初始调用并每秒更新
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // 添加滚动效果 - 当滚动到元素位置时淡入
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // 观察需要动画的元素
+        document.querySelectorAll('.problem-card, .contest-card, .stat, .community-text, .language-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
