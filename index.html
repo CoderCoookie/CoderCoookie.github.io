@@ -3,24 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie</title>
-    <link rel="icon" href="https://buttercoookie.github.io/image/coookie.png" type="image/png">
-    <link rel="shortcut icon" href="https://buttercoookie.github.io/image/coookie.png" type="image/png">
+    <title>StellarVein | 星脉</title>
+    <link rel="icon" href="https://stellarvein.github.io/image/transparentlogo.png" type="image/png">
+    <link rel="shortcut icon" href="https://stellarvein.github.io/image/transparentlogo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4A90E2',
-                        secondary: '#50E3C2',
-                        code: '#2D3748',
-                        light: '#F7FAFC'
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4',
+                        dark: '#0f172a',
+                        'space-blue': '#1e1b4b',
+                        'neon-blue': '#3b82f6',
+                        'neon-purple': '#a855f7'
                     },
                     fontFamily: {
-                        code: ['Consolas', 'Monaco', 'monospace'],
-                        sans: ['Comic Sans MS', 'Marker Felt', 'sans-serif']
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'exo': ['Exo 2', 'sans-serif'],
+                        'code': ['Consolas', 'Monaco', 'monospace']
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+                        'star-twinkle': 'star-twinkle 3s infinite',
+                        'nebula-flow': 'nebula-flow 20s linear infinite',
+                        'scan-line': 'scan-line 8s linear infinite'
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { 'box-shadow': '0 0 5px #6366f1, 0 0 10px #6366f1, 0 0 15px #6366f1' },
+                            '50%': { 'box-shadow': '0 0 10px #6366f1, 0 0 20px #6366f1, 0 0 30px #6366f1' }
+                        },
+                        'star-twinkle': {
+                            '0%, 100%': { opacity: '0.3' },
+                            '50%': { opacity: '1' }
+                        },
+                        'nebula-flow': {
+                            '0%': { transform: 'translateX(0) translateY(0)' },
+                            '100%': { transform: 'translateX(-100px) translateY(50px)' }
+                        },
+                        'scan-line': {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        }
                     }
                 }
             }
@@ -29,56 +59,181 @@
     
     <style type="text/tailwindcss">
         @layer utilities {
-            .text-shadow {
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            .text-glow {
+                text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
             }
-            .float {
-                animation: float 3s ease-in-out infinite;
+            .border-glow {
+                box-shadow: 0 0 10px rgba(99, 102, 241, 0.5), inset 0 0 10px rgba(99, 102, 241, 0.3);
             }
-            .blink {
-                animation: blink 1s step-end infinite;
+            .gradient-text {
+                background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
-            .rotate {
-                animation: rotate 8s linear infinite;
-            }
+        }
+        
+        body {
+            background-color: #0f172a;
+            overflow-x: hidden;
+        }
+        
+        /* 星空背景 */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        /* 扫描线效果 */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.7), transparent);
+            z-index: 999;
+            pointer-events: none;
+            animation: scan-line 8s linear infinite;
+        }
+        
+        /* 科技感卡片 */
+        .tech-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .tech-card:hover::before {
+            left: 100%;
+        }
+        
+        .tech-card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-5px);
+        }
+        
+        /* 导航栏科技感 */
+        .nav-glow {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        /* 按钮科技感 */
+        .tech-btn {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .tech-btn:hover::before {
+            left: 100%;
+        }
+        
+        .tech-btn:hover {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.7);
+        }
+        
+        /* 头像光环效果 */
+        .avatar-halo {
+            position: relative;
+        }
+        
+        .avatar-halo::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: conic-gradient(from 0deg, #6366f1, #8b5cf6, #06b6d4, #8b5cf6, #6366f1);
+            border-radius: 50%;
+            z-index: 0;
+            animation: rotate 8s linear infinite;
         }
         
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
-        }
-        
-        @keyframes blink {
-            from, to { opacity: 1; }
-            50% { opacity: 0; }
         }
         
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .tech-card {
+                margin-bottom: 1.5rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-light font-sans text-gray-800">
+<body class="font-exo text-gray-300">
+    <!-- 星空背景 -->
+    <div id="stars-container"></div>
+    
+    <!-- 扫描线 -->
+    <div class="scan-line"></div>
+    
     <!-- 导航栏 -->
-    <nav class="bg-white shadow-md sticky top-0 z-10">
+    <nav class="nav-glow bg-dark/80 sticky top-0 z-10">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
-                <a href="#" class="text-xl font-bold text-primary flex items-center">
-                    <i class="fa fa-code mr-2"></i>
-                    <span>Cookie</span>
+                <a href="#" class="text-xl font-bold flex items-center">
+                    <i class="fa fa-star mr-2 text-accent"></i>
+                    <span class="font-orbitron text-white">StellarVein</span>
+                    <span class="text-accent ml-1">|</span>
+                    <span class="ml-1 gradient-text font-bold">星脉</span>
                 </a>
                 
                 <div class="hidden md:flex space-x-6 justify-start flex-1 ml-8">
-                    <!-- <a href="https://codercoookie.github.io/blog/" class="hover:text-primary transition-colors">Blog</a>
-                    <a href="https://codercoookie.github.io/workspace/" class="hover:text-primary transition-colors">Workspace</a>
-                    <a href="https://hydro.ac/d/CookieOJ/" class="hover:text-primary transition-colors">COJ</a>
-                    <a href="https://vijos.org/d/AuroraOJ/" class="hover:text-primary transition-colors">AOJ</a> -->
+                    <!-- 保留原有链接结构，但暂时隐藏内容 -->
                 </div>
                 
                 <!-- 移动端菜单按钮 -->
-                <button id="menuBtn" class="md:hidden text-xl">
+                <button id="menuBtn" class="md:hidden text-xl text-accent">
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
@@ -86,37 +241,55 @@
             <!-- 移动端菜单 -->
             <div id="mobileMenu" class="md:hidden hidden mt-3 pb-2">
                 <div class="flex flex-col space-y-3">
-                    <a href="#about" class="hover:text-primary transition-colors"></a>
+                    <a href="#about" class="hover:text-accent transition-colors"></a>
                 </div>
             </div>
         </div>
     </nav>
-    <header class="py-16 md:py-24 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div class="container mx-auto px-4">
+    
+    <!-- 英雄区域 -->
+    <header class="py-16 md:py-24 relative overflow-hidden">
+        <!-- 星空背景装饰 -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-30">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-purple-900/20 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-80 h-80 bg-blue-900/20 rounded-full filter blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/3 w-96 h-96 bg-indigo-900/10 rounded-full filter blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-6 leading-tight">
-                        Hi, I'm<span class="text-primary"> Cookie</span><span class="blink">_</span>
+                    <div class="mb-4">
+                        <span class="inline-block px-3 py-1 bg-indigo-900/50 text-accent text-sm rounded-full border border-accent/30">星脉工作室</span>
+                    </div>
+                    
+                    <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4 leading-tight font-orbitron">
+                        <span class="text-white">StellarVein</span>
+                        <span class="gradient-text"> 星脉</span>
+                        <span class="text-accent blink">_</span>
                     </h1>
-                    <p class="text-lg mb-8">
-                        <br>
-                        <br>
-                        
+                    
+                    <p class="text-lg mb-8 text-gray-400 max-w-xl">
+                        Code every stars. <br>
+                        Keep counting stars. 
                     </p>
+                    
                     <div class="flex flex-wrap gap-4">
-                        <a href="https://github.com/ButterCoookie" target="_blank" class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg transition-colors flex items-center">
-                            <i class="fa fa-github mr-2"></i> Github
+                        <a href="https://github.com/StellarVein" target="_blank" class="tech-btn text-white px-6 py-3 rounded-lg flex items-center font-medium">
+                            <i class="fa fa-github mr-2"></i> GitHub Site
                         </a>
-                        <a href="https://www.luogu.me/user/1008766/" class="bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-5 py-2 rounded-lg transition-colors flex items-center">
-                            Others
+                        <a href="https://buttercoookie.github.io/" class="px-6 py-3 rounded-lg border border-accent/50 text-accent hover:bg-accent/10 transition-colors flex items-center">
+                            <i class="fa fa-rocket mr-2"></i> Owner Coookie
                         </a>
                     </div>
                 </div>
                 
                 <div class="md:w-1/2 flex justify-center">
-                    <div class="relative">
-                        <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-full blur-lg opacity-30 rotate"></div>
-                        <img src="https://buttercoookie.github.io/image/coookie.jpeg" alt="Cookie" class="relative z-10 w-56 h-56 rounded-full border-4 border-white shadow-lg float">
+                    <div class="avatar-halo">
+                        <div class="relative z-10 w-64 h-64 rounded-full overflow-hidden border-4 border-dark">
+                            <img src="https://stellarvein.github.io/image/logo.png" alt="logo" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-full blur-xl opacity-30 animate-pulse-glow"></div>
                     </div>
                 </div>
             </div>
@@ -124,86 +297,97 @@
     </header>
     
     <!-- 应用程序版块 -->
-    <section id="apps" class="py-16 bg-white">
+    <section id="apps" class="py-16 relative">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">Applications</h2>
-                <div class="w-16 h-2 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Coookie Net Apps</p>
+                <div class="inline-block px-4 py-1 bg-indigo-900/50 text-accent text-sm rounded-full border border-accent/30 mb-4">Applications</div>
+                <h2 class="text-[clamp(1.8rem,3vw,2.8rem)] font-bold mb-3 text-white font-orbitron">App Center</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4"></div>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Every apps are reflections of our team's creativity and innovation. </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- 开发工具类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary mr-3">
-                            <i class="fa fa-code"></i>
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary mr-3 border border-primary/30">
+                            <i class="fa fa-code text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Code</h3>
+                        <h3 class="text-xl font-bold text-white">Code</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">code, algorithm and C++</p>
                     <ul class="space-y-3">
-                            <a href="https://CookieOJ.github.io/" class="flex items-center hover:text-primary transition-colors">
+                        <li>
+                            <a href="https://CookieOJ.github.io/" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Cookie Online Judge</span>
+                                <span>CookieOJ</span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://vijos.org/d/AuroraOJ/" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://vijos.org/d/AuroraOJ/" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Aurora Online Judge</span>
+                                <span>AuroraOJ</span>
                             </a>
                         </li>
                     </ul>
                 </div>
                 
                 <!-- 学习资源类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500 mr-3">
-                            <i class="fa fa-book"></i>
+                        <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-500 mr-3 border border-yellow-500/30">
+                            <i class="fa fa-book text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Resource</h3>
+                        <h3 class="text-xl font-bold text-white">Knowledge</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">knowledge and experiences blog</p>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://www.luogu.com.cn/user/1008766" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://www.luogu.com.cn/user/1008766" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Luogu Blog</span>
+                                <span>Luogu</span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://blog.csdn.net/OIer_Jacky" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://blog.csdn.net/OIer_Jacky" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
                                 <span>CSDN</span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.cnblogs.com/Cokie" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://www.cnblogs.com/Cokie" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>博客园</span>
+                                <span>CNBlogs</span>
                             </a>
                         </li>
                     </ul>
                 </div>
 
-
                 <!-- 在线工具类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary mr-3">
-                            <i class="fa fa-wrench"></i>
+                        <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center text-accent mr-3 border border-accent/30">
+                            <i class="fa fa-wrench text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Tool</h3>
+                        <h3 class="text-xl font-bold text-white">Tools</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">useful life tools</p>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://buttercoookie.github.io/browser" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://stellarvein.github.io/browser" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
                                 <span>Browser</span>
                             </a>
                         </li>
                         <li>
-                            <a href="https://buttercoookie.github.io/CodeHighlighter" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://stellarvein.github.io/CodeHighlighter" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
                                 <span>Code Highlighter</span>
                             </a>
@@ -212,118 +396,176 @@
                 </div>
 
                 <!-- 算法平台类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 mr-3">
-                            <i class="fa fa-calculator"></i>
+                        <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-500 mr-3 border border-purple-500/30">
+                            <i class="fa fa-calculator text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Work</h3>
+                        <h3 class="text-xl font-bold text-white">Work</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">just for efficiency</p>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://buttercoookie.github.io/workspace/" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://stellarvein.github.io/workspace/" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Workspace</span>
+                                <span>Work Space</span>
                             </a>
-                        <li>
+                        </li>
                     </ul>
                 </div>
                 
                 <!-- 游戏与娱乐类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 mr-3">
-                            <i class="fa fa-gamepad"></i>
+                        <div class="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 mr-3 border border-red-500/30">
+                            <i class="fa fa-gamepad text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Life</h3>
+                        <h3 class="text-xl font-bold text-white">Life</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">more than lines of code</p>
                     <ul class="space-y-3">
                         <li>
-                            <a href="https://buttercoookie.github.io/blog/" class="flex items-center hover:text-primary transition-colors">
+                            <a href="https://stellarvein.github.io/blog/" class="flex items-center hover:text-accent transition-colors group">
+                                <div class="w-2 h-2 bg-accent rounded-full mr-3 group-hover:animate-pulse"></div>
                                 <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Blogs</span>
+                                <span>Blog</span>
                             </a>
                         </li>
                     </ul>
                 </div>
                 
                 <!-- 实用工具类别 -->
-                <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mr-3">
-                            <i class="fa fa-cog"></i>
+                        <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mr-3 border border-green-500/30">
+                            <i class="fa fa-cog text-lg"></i>
                         </div>
-                        <h3 class="text-xl font-bold">Others</h3>
+                        <h3 class="text-xl font-bold text-white">Others</h3>
                     </div>
+                    <p class="text-gray-400 mb-4">more and more, no ending</p>
                     <ul class="space-y-3">
-                        
+                        <li class="text-gray-500">Building...</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
-    <section id="apps" class="py-16 bg-white">
+    
+    <!-- 项目展示区域 -->
+    <section id="projects" class="py-16 bg-dark/50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-3">Projects</h2>
-                <div class="w-16 h-2 bg-primary mx-auto rounded-full"></div>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Coookie Github Projects</p>
+                <div class="inline-block px-4 py-1 bg-indigo-900/50 text-accent text-sm rounded-full border border-accent/30 mb-4">Projects</div>
+                <h2 class="text-[clamp(1.8rem,3vw,2.8rem)] font-bold mb-3 text-white font-orbitron">Project Sort</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4"></div>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto">Studio's all respositories</p>
             </div>
 
-        <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <h3 class="text-xl font-bold">File Editor</h3>
+                        <div class="w-10 h-10 rounded-lg bg-primary/30 flex items-center justify-center text-primary mr-3 border border-primary/50">
+                            <i class="fa fa-file-text"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">File Editor</h3>
+                        <span class="ml-3 px-2 py-1 bg-accent/20 text-accent text-xs rounded">Files</span>
                     </div>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://github.com/ButterCoookie/FileEditor" class="flex items-center hover:text-primary transition-colors">
-                                <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>File Editor</span>
-                            </a>
-                        <li>
-                    </ul>
+                    <p class="text-gray-400 mb-4">A powerful interstellar file editor tool, supporting multi-format code editing and preview. </p>
+                    <a href="https://github.com/stellarvein/FileEditor" class="inline-flex items-center text-accent hover:text-accent/80 transition-colors">
+                        <i class="fa fa-external-link mr-2"></i>
+                        <span>visit</span>
+                    </a>
                 </div>
-            <br></br>
-            <div class="bg-light p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                
+                <div class="tech-card p-6 rounded-xl">
                     <div class="flex items-center mb-4">
-                        <h3 class="text-xl font-bold">Cookie Cpp</h3>
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/30 flex items-center justify-center text-purple-500 mr-3 border border-purple-500/50">
+                            <i class="fa fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Cookie Cpp</h3>
+                        <span class="ml-3 px-2 py-1 bg-green-500/20 text-green-500 text-xs rounded">Cookie Cpp</span>
                     </div>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="https://github.com/ButterCoookie/CookieCpp" class="flex items-center hover:text-primary transition-colors">
-                                <i class="fa fa-external-link mr-2 text-sm"></i>
-                                <span>Cookie Cpp</span>
-                            </a>
-                        <li>
-                    </ul>
+                    <p class="text-gray-400 mb-4">A powerful interstellar C++ tool library, containing various algorithm implementations and utility tools.</p>
+                    <a href="https://github.com/CookieOJ/CookieCpp" class="inline-flex items-center text-accent hover:text-accent/80 transition-colors">
+                        <i class="fa fa-external-link mr-2"></i>
+                        <span>visit</span>
+                    </a>
                 </div>
+            </div>
+            
+            <!-- 未来项目预告 -->
+            <div class="mt-12 tech-card p-6 rounded-xl border-dashed border-2 border-accent/30">
+                <div class="text-center">
+                    <div class="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent text-2xl mx-auto mb-4">
+                        <i class="fa fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">More Planets</h3>
+                    <p class="text-gray-400">They are preparing their best star-twinkle to see you...</p>
+                </div>
+            </div>
+        </div>
     </section>
+    
     <!-- 页脚 -->
-    <footer class="bg-code text-white py-8">
-        <div class="container mx-auto px-4 text-center">
-            <div class="mb-4">
-                <h3 class="text-xl font-bold mb-2">Cookie</h3>
-                <p class="text-gray-400">CoderCoookie</p>
+    <footer class="bg-dark py-8 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="text-xl font-bold text-white mb-2 font-orbitron">StellarVein | 星脉</h3>
+                    <p class="text-gray-500">Code every stars.Keep counting stars.</p>
+                </div>
+                
+                <div class="flex space-x-4 mb-6 md:mb-0">
+                    <a href="https://github.com/stellarvein" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-primary/20 flex items-center justify-center text-gray-400 hover:text-primary transition-colors border border-gray-700">
+                        <i class="fa fa-github"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-accent/20 flex items-center justify-center text-gray-400 hover:text-accent transition-colors border border-gray-700">
+                        <i class="fa fa-codepen"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-red-500/20 flex items-center justify-center text-gray-400 hover:text-red-400 transition-colors border border-gray-700">
+                        <i class="fa fa-youtube-play"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="flex justify-center space-x-4 mb-6">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-github text-xl"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-codepen text-xl"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-youtube-play text-xl"></i>
-                </a>
+            <div class="mt-8 pt-6 border-t border-gray-800 text-center">
+                <p class="text-gray-600 text-sm">
+                    © 2026 StellarVein
+                </p>
             </div>
-            
-            <p class="text-gray-500 text-sm">
-            </p>
         </div>
     </footer>
 
+    <!-- 星空生成脚本 -->
     <script>
+        // 生成星空背景
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // 随机大小
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 随机位置
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // 随机闪烁动画
+                const duration = Math.random() * 3 + 2;
+                star.style.animation = `star-twinkle ${duration}s infinite`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 移动端菜单切换
         const menuBtn = document.getElementById('menuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
         
@@ -335,6 +577,8 @@
                 menuBtn.innerHTML = '<i class="fa fa-times"></i>';
             }
         });
+        
+        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -343,8 +587,29 @@
                     menuBtn.innerHTML = '<i class="fa fa-bars"></i>';
                 }
                 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 初始化星空
+        document.addEventListener('DOMContentLoaded', createStars);
+        
+        // 添加科技感光标效果
+        document.addEventListener('DOMContentLoaded', () => {
+            const techCards = document.querySelectorAll('.tech-card');
+            techCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
                 });
             });
         });
